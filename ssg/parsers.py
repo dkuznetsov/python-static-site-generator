@@ -1,4 +1,4 @@
-from shutil import copy2
+import shutil
 from typing import List
 from pathlib import Path
 
@@ -10,22 +10,19 @@ class Parser:
         return extension in self.extensions
 
     def parse(self, path: Path, source: Path, dest: Path):
-        raise NotImplementedError()
+        raise NotImplementedError
 
-    @staticmethod
-    def read(path: Path):
-        with open(path) as file:
+    def read(self, path: Path):
+        with open(path, 'r') as file:
             return file.read()
 
-    @staticmethod
-    def write(path: Path, dest: Path, content, ext='.html'):
+    def write(self, path: Path, dest: Path, content, ext='.html'):
         full_path = dest / path.with_suffix(ext).name
         with open(full_path, 'w') as file:
             file.write(content)
 
-    @staticmethod
-    def copy(path, source, dest):
-        copy2(path, dest / path.relative_to(source))
+    def copy(self, path, source, dest):
+        shutil.copy2(path, dest / path.relative_to(source))
 
 
 class ResourceParser(Parser):
